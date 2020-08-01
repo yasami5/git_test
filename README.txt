@@ -1,24 +1,25 @@
-Updated as of 23 January 2020
+2020年1月23日の時点で更新
 -----------------------------
-In this package, you will find a brief introduction to the Scripting API for DaVinci Resolve Studio. Apart from this README.txt file, this package contains folders containing the basic import
-modules for scripting access (DaVinciResolve.py) and some representative examples.
+このパッケージには、DaVinci Resolve StudioのスクリプトAPIの簡単な紹介が含まれています。
+このREADME.txtファイルとは別に、このパッケージには、スクリプトアクセス用の基本的なインポートモジュール（DaVinciResolve.py）といくつかの代表的な例を含むフォルダーが含まれています。
 
-From v16.2.0 onwards, the nodeIndex parameters accepted by SetLUT() and SetCDL() are 1-based instead of 0-based, i.e. 1 <= nodeIndex <= total number of nodes.
+v16.2.0以降、SetLUT（）およびSetCDL（）で受け入れられるnodeIndexパラメータは、0ベースではなく1ベースです。つまり、1 <= nodeIndex <=ノードの総数です。
 
 
-Overview
+概観
 --------
-As with Blackmagic Design Fusion scripts, user scripts written in Lua and Python programming languages are supported. By default, scripts can be invoked from the Console window in the Fusion page,
-or via command line. This permission can be changed in Resolve Preferences, to be only from Console, or to be invoked from the local network. Please be aware of the security implications when
-allowing scripting access from outside of the Resolve application.
+Blackmagic Design Fusionスクリプトと同様に、LuaおよびPythonプログラミング言語で記述されたユーザースクリプトがサポートされています。
+デフォルトでは、Fusionページのコンソールウィンドウから、またはコマンドラインからスクリプトを呼び出すことができます。
+この権限は、Resolve Preferencesで、コンソールからのみ、またはローカルネットワークから呼び出すように変更できます。
+Resolveアプリケーションの外部からのスクリプトアクセスを許可する場合は、セキュリティへの影響に注意してください。
 
 
-Using a script
+スクリプトを使用する
 --------------
-DaVinci Resolve needs to be running for a script to be invoked.
+スクリプトを呼び出すには、DaVinci Resolveが実行されている必要があります。
 
-For a Resolve script to be executed from an external folder, the script needs to know of the API location. 
-You may need to set the these environment variables to allow for your Python installation to pick up the appropriate dependencies as shown below:
+Resolveスクリプトを外部フォルダーから実行するには、スクリプトがAPIの場所を知っている必要があります。
+以下に示すように、Pythonインストールが適切な依存関係を取得できるように、これらの環境変数を設定する必要がある場合があります。
 
     Mac OS X:
     RESOLVE_SCRIPT_API="/Library/Application Support/Blackmagic Design/DaVinci Resolve/Developer/Scripting/"
@@ -36,18 +37,20 @@ You may need to set the these environment variables to allow for your Python ins
     PYTHONPATH="$PYTHONPATH:$RESOLVE_SCRIPT_API/Modules/"
     (Note: For standard ISO Linux installations, the path above may need to be modified to refer to /home/resolve instead of /opt/resolve)
 
-As with Fusion scripts, Resolve scripts can also be invoked via the menu and the Console.
+Fusionスクリプトと同様に、Resolveスクリプトはメニューとコンソールから呼び出すこともできます。
 
-On startup, DaVinci Resolve scans the Utility Scripts directory and enumerates the scripts found in the Script application menu. Placing your script in this folder and invoking it from this menu is
-the easiest way to use scripts. The Utility Scripts folder is located in:
+起動時に、DaVinci Resolveはユーティリティスクリプトディレクトリをスキャンし、スクリプトアプリケーションメニューにあるスクリプトを列挙します。
+スクリプトをこのフォルダーに置き、このメニューからスクリプトを呼び出すのが、スクリプトを使用する最も簡単な方法です。 
+ユーティリティスクリプトフォルダは次の場所にあります。
     Mac OS X:   /Library/Application Support/Blackmagic Design/DaVinci Resolve/Fusion/Scripts/Comp/
     Windows:    %APPDATA%\Blackmagic Design\DaVinci Resolve\Fusion\Scripts\Comp\
     Linux:      /opt/resolve/Fusion/Scripts/Comp/   (or /home/resolve/Fusion/Scripts/Comp/ depending on installation)
 
-The interactive Console window allows for an easy way to execute simple scripting commands, to query or modify properties, and to test scripts. The console accepts commands in Python 2.7, Python 3.6
-and Lua and evaluates and executes them immediately. For more information on how to use the Console, please refer to the DaVinci Resolve User Manual.
+対話型のコンソールウィンドウを使用すると、簡単なスクリプトコマンドの実行、プロパティのクエリや変更、スクリプトのテストを簡単に行うことができます。
+コンソールは、Python 2.7、Python 3.6、Luaのコマンドを受け入れ、それらをすぐに評価して実行します。
+コンソールの使用方法の詳細については、DaVinci Resolveユーザーマニュアルを参照してください。
 
-This example Python script creates a simple project:
+このサンプルPythonスクリプトは、単純なプロジェクトを作成します。
     #!/usr/bin/env python
     import DaVinciResolveScript as dvr_script
     resolve = dvr_script.scriptapp("Resolve")
@@ -55,19 +58,23 @@ This example Python script creates a simple project:
     projectManager = resolve.GetProjectManager()
     projectManager.CreateProject("Hello World")
 
-The resolve object is the fundamental starting point for scripting via Resolve. As a native object, it can be inspected for further scriptable properties - using table iteration and "getmetatable"
-in Lua and dir, help etc in Python (among other methods). A notable scriptable object above is fusion - it allows access to all existing Fusion scripting functionality.
+resolveオブジェクトは、Resolveを介したスクリプト作成の基本的な開始点です。
+ネイティブオブジェクトとして、追加のスクリプト可能なプロパティがないか検査できます-Luaとdirで「getmetatable」というテーブル反復を使用し、（他のメソッドの中でも）Pythonでヘルプなどを使用します。
+上記の注目すべきスクリプト可能なオブジェクトはFusionです。
+これにより、既存のすべてのFusionスクリプト機能にアクセスできます。
 
 
-Running DaVinci Resolve in headless mode
+DaVinci Resolveをヘッドレスモードで実行する
 ----------------------------------------
-DaVinci Resolve can be launched in a headless mode without the user interface using the -nogui command line option. When DaVinci Resolve is launched using this option, the user interface is disabled.
-However, the various scripting APIs will continue to work as expected.
+DaVinci Resolveは、-noguiコマンドラインオプションを使用して、ユーザーインターフェイスなしでヘッドレスモードで起動できます。
+このオプションを使用してDaVinci Resolveを起動すると、ユーザーインターフェイスは無効になります。
+ただし、さまざまなスクリプトAPIは引き続き期待どおりに機能します。
 
 
-Basic Resolve API
+基本的なResolve API
 -----------------
-Some commonly used API functions are described below (*). As with the resolve object, each object is inspectable for properties and functions.
+一般的に使用されるいくつかのAPI関数を以下に示します（*）。
+resolveオブジェクトと同様に、各オブジェクトはプロパティと関数を検査できます。
 
 Resolve
   Fusion()                                        --> Fusion             # Returns the Fusion object. Starting point for Fusion scripts.
