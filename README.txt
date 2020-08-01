@@ -77,9 +77,9 @@ DaVinci Resolveは、-noguiコマンドラインオプションを使用して�
 resolveオブジェクトと同様に、各オブジェクトはプロパティと関数を検査できます。
 
 Resolve
-  Fusion()                                        --> Fusion             # Returns the Fusion object. Starting point for Fusion scripts.
-  GetMediaStorage()                               --> MediaStorage       # Returns media storage object to query and act on media locations.
-  GetProjectManager()                             --> ProjectManager     # Returns project manager object for currently open database.
+  Fusion()                                        --> Fusion             # Fusionオブジェクトを返します。Fusionスクリプトの開始点。
+  GetMediaStorage()                               --> MediaStorage       # メディアの場所を照会して操作するメディアストレージオブジェクトを返します。
+  GetProjectManager()                             --> ProjectManager     # 現在開いているデータベースのプロジェクトマネージャオブジェクトを返します。
   OpenPage(pageName)                              --> None               # Switches to indicated page in DaVinci Resolve. Input can be one of ("media", "cut", "edit", "fusion", "color", "fairlight", "deliver").
 
 ProjectManager
